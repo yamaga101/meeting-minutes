@@ -156,17 +156,17 @@ export default function AnalyticsConsentSwitch() {
     <>
       <div className="space-y-4">
         <div>
-          <h3 className="text-base font-semibold text-gray-800 mb-2">Usage Analytics</h3>
+          <h3 className="text-base font-semibold text-gray-800 mb-2">利用分析</h3>
           <p className="text-sm text-gray-600 mb-4">
-            Help us improve Meetily by sharing anonymous usage data. No personal content is collected—everything stays on your device.
+            匿名の利用データを共有してアプリの改善にご協力ください。個人的なコンテンツは収集されず、すべてお使いのデバイスに保存されます。
           </p>
         </div>
 
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
           <div>
-            <h4 className="font-semibold text-gray-800">Enable Analytics</h4>
+            <h4 className="font-semibold text-gray-800">分析を有効化</h4>
             <p className="text-sm text-gray-600">
-              {isProcessing ? 'Updating...' : 'Anonymous usage patterns only'}
+              {isProcessing ? '更新中...' : '匿名の利用パターンのみ'}
             </p>
           </div>
           <div className="flex items-center gap-2 ml-4">
@@ -186,9 +186,9 @@ export default function AnalyticsConsentSwitch() {
           <div className="p-4 border rounded-lg bg-gray-50">
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-gray-800 mb-1">Your User ID</div>
+                <div className="font-medium text-gray-800 mb-1">あなたのユーザーID</div>
                 <p className="text-xs text-gray-600 mb-2">
-                  Share this ID when reporting issues to help us investigate your issue logs
+                  問題報告時にこのIDを共有していただくと、調査に役立ちます
                 </p>
                 <div className="flex items-center gap-2">
                   <code className="text-xs text-gray-700 bg-white px-2 py-1 rounded border border-gray-300 font-mono flex-1 truncate">
@@ -204,12 +204,12 @@ export default function AnalyticsConsentSwitch() {
                     {isCopied ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-green-600" />
-                        <span className="text-green-600">Copied!</span>
+                        <span className="text-green-600">コピー済み！</span>
                       </>
                     ) : (
                       <>
                         <Copy className="w-3.5 h-3.5" />
-                        <span>Copy</span>
+                        <span>コピー</span>
                       </>
                     )}
                   </Button>
@@ -223,13 +223,13 @@ export default function AnalyticsConsentSwitch() {
           <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
           <div className="text-xs text-blue-700">
             <p className="mb-1">
-              Your meetings, transcripts, and recordings remain completely private and local.
+              会議、文字起こし、録音データは完全にプライベートでローカルに保存されます。
             </p>
             <button
               onClick={handlePrivacyPolicyClick}
               className="text-blue-600 hover:text-blue-800 underline hover:no-underline"
             >
-              View Privacy Policy
+              プライバシーポリシーを見る
             </button>
           </div>
         </div>

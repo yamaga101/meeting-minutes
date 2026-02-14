@@ -11,8 +11,8 @@ export interface Language {
 
 // ISO 639-1 language codes supported by Whisper
 const LANGUAGES: Language[] = [
-  { code: 'auto', name: 'Auto Detect (Original Language)' },
-  { code: 'auto-translate', name: 'Auto Detect (Translate to English)' },
+  { code: 'auto', name: '自動検出（原語のまま）' },
+  { code: 'auto-translate', name: '自動検出（英語に翻訳）' },
   { code: 'en', name: 'English' },
   { code: 'zh', name: 'Chinese' },
   { code: 'de', name: 'German' },
@@ -154,12 +154,12 @@ export function LanguageSelection({
 
       // Show success toast
       const languageName = selectedLang?.name || languageCode;
-      toast.success("Language preference saved", {
-        description: `Transcription language set to ${languageName}`
+      toast.success("言語設定を保存しました", {
+        description: `文字起こし言語: ${languageName}`
       });
     } catch (error) {
       console.error('Failed to save language preference:', error);
-      toast.error("Failed to save language preference", {
+      toast.error("言語設定の保存に失敗しました", {
         description: error instanceof Error ? error.message : String(error)
       });
     } finally {
@@ -170,14 +170,14 @@ export function LanguageSelection({
   // Find the selected language name for display
   const selectedLanguageName = LANGUAGES.find(
     lang => lang.code === selectedLanguage
-  )?.name || 'Auto Detect (Original Language)';
+  )?.name || '自動検出（原語のまま）';
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Globe className="h-4 w-4 text-gray-600" />
-          <h4 className="text-sm font-medium text-gray-900">Transcription Language</h4>
+          <h4 className="text-sm font-medium text-gray-900">文字起こし言語</h4>
         </div>
       </div>
 
@@ -199,31 +199,31 @@ export function LanguageSelection({
         {/* Parakeet language limitation warning */}
         {isParakeet && (
           <div className="p-2 bg-amber-50 border border-amber-200 rounded text-amber-800">
-            <p className="font-medium">ℹ️ Parakeet Language Support</p>
-            <p className="mt-1 text-xs">Parakeet currently only supports automatic language detection. Manual language selection is not available. Use Whisper if you need to specify a particular language.</p>
+            <p className="font-medium">ℹ️ Parakeet 言語サポート</p>
+            <p className="mt-1 text-xs">Parakeetは現在、自動言語検出のみ対応しています。手動での言語選択はできません。特定の言語を指定する場合はWhisperを使用してください。</p>
           </div>
         )}
 
         {/* Info text */}
         <div className="text-xs space-y-2 pt-2">
           <p className="text-gray-600">
-            <strong>Current:</strong> {selectedLanguageName}
+            <strong>現在:</strong> {selectedLanguageName}
           </p>
           {selectedLanguage === 'auto' && (
             <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-yellow-800">
-              <p className="font-medium">⚠️ Auto Detect may produce incorrect results</p>
-              <p className="mt-1">For best accuracy, select your specific language (e.g., English, Spanish, etc.)</p>
+              <p className="font-medium">⚠️ 自動検出は不正確な結果になる場合があります</p>
+              <p className="mt-1">最高の精度を得るには、使用する言語を直接選択してください（例：日本語、英語など）</p>
             </div>
           )}
           {selectedLanguage === 'auto-translate' && (
             <div className="p-2 bg-blue-50 border border-blue-200 rounded text-blue-800">
-              <p className="font-medium">🌐 Translation Mode Active</p>
-              <p className="mt-1">All audio will be automatically translated to English. Best for multilingual meetings where you need English output.</p>
+              <p className="font-medium">🌐 翻訳モードが有効です</p>
+              <p className="mt-1">すべての音声が自動的に英語に翻訳されます。英語出力が必要な多言語会議に最適です。</p>
             </div>
           )}
           {selectedLanguage !== 'auto' && selectedLanguage !== 'auto-translate' && (
             <p className="text-gray-600">
-              Transcription will be optimized for <strong>{selectedLanguageName}</strong>
+              <strong>{selectedLanguageName}</strong> に最適化して文字起こしを行います
             </p>
           )}
         </div>
