@@ -469,7 +469,7 @@ export function TranscriptProvider({ children }: { children: ReactNode }) {
       .join('\n');
     navigator.clipboard.writeText(fullTranscript);
 
-    toast.success("Transcript copied to clipboard");
+    toast.success("文字起こしをクリップボードにコピーしました");
   }, [transcripts]);
 
   // Force flush buffer (for final transcript processing)

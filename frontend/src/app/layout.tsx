@@ -74,8 +74,8 @@ export default function RootLayout({
       console.log('[Layout] Received request-recording-toggle from tray');
 
       if (showOnboarding) {
-        toast.error("Please complete setup first", {
-          description: "You need to finish onboarding before you can start recording."
+        toast.error("セットアップを完了してください", {
+          description: "録音を開始するにはオンボーディングを完了する必要があります。"
         });
       } else {
         // If in main app, forward to useRecordingStart via window event
@@ -98,7 +98,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="ja">
       <body className={`${sourceSans3.variable} font-sans antialiased`}>
         <AnalyticsProvider>
           <RecordingStateProvider>

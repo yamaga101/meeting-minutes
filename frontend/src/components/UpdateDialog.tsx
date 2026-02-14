@@ -38,11 +38,11 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
         if (updateResult?.available) {
           setUpdate(updateResult);
         } else {
-          setError('Update no longer available');
+          setError('アップデートは利用できなくなりました');
         }
       }).catch((err) => {
         console.error('Failed to get update object:', err);
-        setError('Failed to prepare update: ' + (err.message || 'Unknown error'));
+        setError('アップデートの準備に失敗しました: ' + (err.message || '不明なエラー'));
       });
     } else {
       // Reset state when dialog closes
@@ -63,11 +63,11 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
           updateToUse = updateResult;
           setUpdate(updateResult);
         } else {
-          setError('Update not available');
+          setError('アップデートは利用できません');
           return;
         }
       } catch (err: any) {
-        setError('Failed to get update: ' + (err.message || 'Unknown error'));
+        setError('アップデートの取得に失敗しました: ' + (err.message || '不明なエラー'));
         return;
       }
     }
@@ -123,7 +123,7 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
       });
 
       console.log('[UpdateDialog] Update installed successfully');
-      toast.success('Update installed successfully. The app will restart...');
+      toast.success('アップデートのインストールが完了しました。アプリを再起動します...');
 
       // Mark download as complete before closing
       setIsDownloading(false);
@@ -135,9 +135,9 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
       await relaunch();
     } catch (err: any) {
       console.error('Update failed:', err);
-      setError(err.message || 'Failed to download or install update');
+      setError(err.message || 'アップデートのダウンロードまたはインストールに失敗しました');
       setIsDownloading(false);
-      toast.error('Update failed: ' + (err.message || 'Unknown error'));
+      toast.error('アップデート失敗: ' + (err.message || '不明なエラー'));
     }
   };
 
@@ -190,26 +190,26 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
             {isDownloading ? (
               <>
                 <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                Downloading Update
+                アップデートをダウンロード中
               </>
             ) : error ? (
               <>
                 <AlertCircle className="h-5 w-5 text-red-600" />
-                Update Error
+                アップデートエラー
               </>
             ) : (
               <>
                 <Download className="h-5 w-5 text-blue-600" />
-                Update Available
+                アップデートがあります
               </>
             )}
           </DialogTitle>
           <DialogDescription>
             {isDownloading
-              ? 'Downloading the latest version...'
+              ? '最新バージョンをダウンロード中...'
               : error
-              ? 'An error occurred while updating'
-              : `A new version (${updateInfo.version}) is available`}
+              ? 'アップデート中にエラーが発生しました'
+              : `新しいバージョン (${updateInfo.version}) が利用可能です`}
           </DialogDescription>
         </DialogHeader>
 
@@ -218,16 +218,16 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
             <>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Current Version:</span>
+                  <span className="text-muted-foreground">現在のバージョン:</span>
                   <span className="font-medium">{updateInfo.currentVersion}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">New Version:</span>
+                  <span className="text-muted-foreground">新しいバージョン:</span>
                   <span className="font-medium text-blue-600">{updateInfo.version}</span>
                 </div>
                 {updateInfo.date && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Release Date:</span>
+                    <span className="text-muted-foreground">リリース日:</span>
                     <span className="font-medium">{formatDate(updateInfo.date)}</span>
                   </div>
                 )}
@@ -253,7 +253,7 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
                   />
                 </div>
                 <div className="flex justify-between text-xs text-gray-600 mt-1">
-                  <span>{Math.round(progress.percentage)}% complete</span>
+                  <span>{Math.round(progress.percentage)}% 完了</span>
                   {progress.total > 0 && (
                     <span>
                       {formatBytes(progress.downloaded)} / {formatBytes(progress.total)}
@@ -262,7 +262,7 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
                 </div>
               </div>
               <p className="text-sm text-muted-foreground text-center">
-                The app will restart automatically after installation
+                インストール後にアプリが自動的に再起動します
               </p>
             </div>
           )}
@@ -278,17 +278,17 @@ export function UpdateDialog({ open, onOpenChange, updateInfo }: UpdateDialogPro
           {!isDownloading && !error && (
             <>
               <Button variant="outline" onClick={() => handleOpenChange(false)}>
-                Later
+                後で
               </Button>
               <Button onClick={handleDownloadAndInstall} className="bg-blue-600 hover:bg-blue-700">
                 <Download className="h-4 w-4 mr-2" />
-                Download & Install
+                ダウンロード & インストール
               </Button>
             </>
           )}
           {error && (
             <Button variant="outline" onClick={() => handleOpenChange(false)}>
-              Close
+              閉じる
             </Button>
           )}
         </DialogFooter>

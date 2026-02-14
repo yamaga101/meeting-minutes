@@ -10,22 +10,22 @@ export function WelcomeStep() {
   const features = [
     {
       icon: Lock,
-      title: 'Your data never leaves your device',
+      title: 'データはデバイスから外に出ません',
     },
     {
       icon: Sparkles,
-      title: 'Intelligent summaries & insights',
+      title: 'インテリジェントな要約とインサイト',
     },
     {
       icon: Cpu,
-      title: 'Works offline, no cloud required',
+      title: 'オフラインで動作、クラウド不要',
     },
   ];
 
   return (
     <OnboardingContainer
-      title="Welcome to Meetily"
-      description="Record. Transcribe. Summarize. All on your device."
+      title="Meetily へようこそ"
+      description="録音・文字起こし・要約。すべてあなたのデバイスで。"
       step={1}
       hideProgress={true}
     >
@@ -56,9 +56,9 @@ export function WelcomeStep() {
             onClick={goNext}
             className="w-full h-11 bg-gray-900 hover:bg-gray-800 text-white"
           >
-            Get Started
+            はじめる
           </Button>
-          <p className="text-xs text-center text-gray-500">Takes less than 3 minutes</p>
+          <p className="text-xs text-center text-gray-500">3分以内で完了します</p>
         </div>
       </div>
     </OnboardingContainer>

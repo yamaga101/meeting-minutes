@@ -32,7 +32,7 @@ export function PermissionsStep() {
       try {
         await invoke('open_system_settings');
       } catch {
-        alert('Please enable microphone access in System Preferences > Security & Privacy > Microphone');
+        alert('システム環境設定 > セキュリティとプライバシー > マイク からマイクへのアクセスを許可してください');
       }
       return;
     }
@@ -64,7 +64,7 @@ export function PermissionsStep() {
       try {
         await invoke('open_system_settings');
       } catch {
-        alert('Please enable Audio Capture in System Settings → Privacy & Security → Audio Capture');
+        alert('システム設定 → プライバシーとセキュリティ → オーディオキャプチャ からオーディオキャプチャを許可してください');
       }
       return;
     }
@@ -113,8 +113,8 @@ export function PermissionsStep() {
 
   return (
     <OnboardingContainer
-      title="Grant Permissions"
-      description="Meetily needs access to your microphone and system audio to record meetings"
+      title="権限の付与"
+      description="会議を録音するには、マイクとシステムオーディオへのアクセスが必要です"
       step={4}
       hideProgress={true}
       showNavigation={allPermissionsGranted}
@@ -126,8 +126,8 @@ export function PermissionsStep() {
           {/* Microphone */}
           <PermissionRow
             icon={<Mic className="w-5 h-5" />}
-            title="Microphone"
-            description="Required to capture your voice during meetings"
+            title="マイク"
+            description="会議中の音声をキャプチャするために必要です"
             status={permissions.microphone}
             isPending={isPending}
             onAction={handleMicrophoneAction}
@@ -136,8 +136,8 @@ export function PermissionsStep() {
           {/* System Audio */}
           <PermissionRow
             icon={<Volume2 className="w-5 h-5" />}
-            title="System Audio"
-            description="Click Enable to grant Audio Capture permission"
+            title="システムオーディオ"
+            description="有効化をクリックしてオーディオキャプチャの権限を付与"
             status={permissions.systemAudio}
             isPending={isPending}
             onAction={handleSystemAudioAction}
@@ -147,19 +147,19 @@ export function PermissionsStep() {
         {/* Action Buttons */}
         <div className="flex flex-col gap-3 pt-4">
           <Button onClick={handleFinish} disabled={!allPermissionsGranted} className="w-full h-11">
-            Finish Setup
+            セットアップを完了
           </Button>
 
           <button
             onClick={handleSkip}
             className="text-sm text-neutral-500 hover:text-neutral-700 transition-colors"
           >
-            I'll do this later
+            後で設定する
           </button>
 
           {!allPermissionsGranted && (
             <p className="text-xs text-center text-muted-foreground">
-              Recording won't work without permissions. You can grant them later in settings.
+              権限がないと録音できません。後から設定で付与することもできます。
             </p>
           )}
         </div>
