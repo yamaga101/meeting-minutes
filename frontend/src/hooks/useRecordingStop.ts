@@ -295,10 +295,10 @@ export function useRecordingStop(
           setStatus(RecordingStatus.COMPLETED);
 
           // Show success toast with navigation option
-          toast.success('Recording saved successfully!', {
-            description: `${freshTranscripts.length} transcript segments saved.`,
+          toast.success('録音を保存しました', {
+            description: `${freshTranscripts.length} 件の文字起こしセグメントを保存しました。`,
             action: {
-              label: 'View Meeting',
+              label: '会議を表示',
               onClick: () => {
                 router.push(`/meeting-details?id=${meetingId}`);
                 Analytics.trackButtonClick('view_meeting_from_toast', 'recording_complete');
@@ -370,7 +370,7 @@ export function useRecordingStop(
         } catch (saveError) {
           console.error('Failed to save meeting to database:', saveError);
           setStatus(RecordingStatus.ERROR, saveError instanceof Error ? saveError.message : 'Unknown error');
-          toast.error('Failed to save meeting', {
+          toast.error('会議の保存に失敗しました', {
             description: saveError instanceof Error ? saveError.message : 'Unknown error'
           });
           throw saveError;

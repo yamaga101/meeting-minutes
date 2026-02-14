@@ -10,9 +10,9 @@ export function PermissionRow({ icon, title, description, status, isPending = fa
   const isChecking = isPending;
 
   const getButtonText = () => {
-    if (isChecking) return 'Checking...';
-    if (isDenied) return 'Open Settings';
-    return 'Enable';
+    if (isChecking) return '確認中...';
+    if (isDenied) return '設定を開く';
+    return '有効化';
   };
 
   return (
@@ -42,12 +42,12 @@ export function PermissionRow({ icon, title, description, status, isPending = fa
             {isAuthorized ? (
               <span className="text-green-600 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                Access Granted
+                アクセス許可済み
               </span>
             ) : isDenied ? (
               <span className="text-red-500 flex items-center gap-1">
                 <XCircle className="w-3.5 h-3.5" />
-                Access Denied - Please grant in System Settings
+                アクセス拒否 - システム設定から許可してください
               </span>
             ) : (
               <span>{description}</span>
