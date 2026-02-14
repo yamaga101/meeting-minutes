@@ -58,9 +58,9 @@ export function ParakeetModelManager({
         setInitialized(true);
       } catch (err) {
         console.error('Failed to initialize Parakeet:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load models');
-        toast.error('Failed to load transcription models', {
-          description: err instanceof Error ? err.message : 'Unknown error',
+        setError(err instanceof Error ? err.message : 'モデルの読み込みに失敗しました');
+        toast.error('文字起こしモデルの読み込みに失敗しました', {
+          description: err instanceof Error ? err.message : '不明なエラー',
           duration: 5000
         });
       } finally {
@@ -133,8 +133,8 @@ export function ParakeetModelManager({
           // Clean up throttle data
           progressThrottleRef.current.delete(modelName);
 
-          toast.success(`${displayInfo?.icon || '✓'} ${displayName} ready!`, {
-            description: 'Model downloaded and ready to use',
+          toast.success(`${displayInfo?.icon || '✓'} ${displayName} 準備完了！`, {
+            description: 'モデルのダウンロードが完了し、使用可能です',
             duration: 4000
           });
 
@@ -173,11 +173,11 @@ export function ParakeetModelManager({
           // Clean up throttle data
           progressThrottleRef.current.delete(modelName);
 
-          toast.error(`Failed to download ${displayName}`, {
+          toast.error(`${displayName} のダウンロードに失敗しました`, {
             description: error,
             duration: 6000,
             action: {
-              label: 'Retry',
+              label: '再試行',
               onClick: () => downloadModel(modelName)
             }
           });
@@ -231,13 +231,13 @@ export function ParakeetModelManager({
       // Clean up throttle data
       progressThrottleRef.current.delete(modelName);
 
-      toast.info(`${displayName} download cancelled`, {
+      toast.info(`${displayName} のダウンロードをキャンセルしました`, {
         duration: 3000
       });
     } catch (err) {
       console.error('Failed to cancel download:', err);
-      toast.error('Failed to cancel download', {
-        description: err instanceof Error ? err.message : 'Unknown error',
+      toast.error('ダウンロードのキャンセルに失敗しました', {
+        description: err instanceof Error ? err.message : '不明なエラー',
         duration: 4000
       });
     }
@@ -260,8 +260,8 @@ export function ParakeetModelManager({
         )
       );
 
-      toast.info(`Downloading ${displayName}...`, {
-        description: 'This may take a few minutes',
+      toast.info(`${displayName} をダウンロード中...`, {
+        description: '数分かかる場合があります',
         duration: 5000  // Auto-dismiss after 5 seconds
       });
 
@@ -294,7 +294,7 @@ export function ParakeetModelManager({
 
     const displayInfo = getModelDisplayInfo(modelName);
     const displayName = displayInfo?.friendlyName || modelName;
-    toast.success(`Switched to ${displayName}`, {
+    toast.success(`${displayName} に切り替えました`, {
       duration: 3000
     });
   };
@@ -310,8 +310,8 @@ export function ParakeetModelManager({
       const modelList = await ParakeetAPI.getAvailableModels();
       setModels(modelList);
 
-      toast.success(`${displayName} deleted`, {
-        description: 'Model removed to free up space',
+      toast.success(`${displayName} を削除しました`, {
+        description: '容量を確保するためモデルを削除しました',
         duration: 3000
       });
 
@@ -321,8 +321,8 @@ export function ParakeetModelManager({
       }
     } catch (err) {
       console.error('Failed to delete model:', err);
-      toast.error(`Failed to delete ${displayName}`, {
-        description: err instanceof Error ? err.message : 'Delete failed',
+      toast.error(`${displayName} の削除に失敗しました`, {
+        description: err instanceof Error ? err.message : '削除に失敗しました',
         duration: 4000
       });
     }
@@ -342,7 +342,7 @@ export function ParakeetModelManager({
   if (error) {
     return (
       <div className={`bg-red-50 border border-red-200 rounded-lg p-4 ${className}`}>
-        <p className="text-sm text-red-800">Failed to load models</p>
+        <p className="text-sm text-red-800">モデルの読み込みに失敗しました</p>
         <p className="text-xs text-red-600 mt-1">{error}</p>
       </div>
     );
@@ -405,7 +405,7 @@ export function ParakeetModelManager({
           animate={{ opacity: 1, y: 0 }}
           className="text-xs text-gray-500 text-center pt-2"
         >
-          Using {getModelDisplayName(selectedModel)} for transcription
+          {getModelDisplayName(selectedModel)} で文字起こし中
         </motion.div>
       )}
     </div>
@@ -473,7 +473,7 @@ function ModelCard({
       {/* Recommended Badge */}
       {isRecommended && (
         <div className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-medium">
-          Recommended
+          おすすめ
         </div>
       )}
 
@@ -505,7 +505,7 @@ function ModelCard({
               <>
                 <div className="flex items-center gap-1.5 text-green-600">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-xs font-medium">Ready</span>
+                  <span className="text-xs font-medium">準備完了</span>
                 </div>
                 <AnimatePresence>
                   {isHovered && (
@@ -519,7 +519,7 @@ function ModelCard({
                         onDelete();
                       }}
                       className="text-gray-400 hover:text-red-600 transition-colors p-1"
-                      title="Delete model to free up space"
+                      title="モデルを削除して容量を確保"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -538,7 +538,7 @@ function ModelCard({
                 }}
                 className="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
               >
-                Download
+                ダウンロード
               </button>
             )}
 
@@ -550,7 +550,7 @@ function ModelCard({
                 }}
                 className="bg-red-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-red-700 transition-colors"
               >
-                Retry
+                再試行
               </button>
             )}
 
@@ -563,7 +563,7 @@ function ModelCard({
                   }}
                   className="bg-orange-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-orange-700 transition-colors"
                 >
-                  Delete
+                  削除
                 </button>
                 <button
                   onClick={(e) => {
@@ -572,7 +572,7 @@ function ModelCard({
                   }}
                   className="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
                 >
-                  Re-download
+                  再ダウンロード
                 </button>
               </div>
             )}
@@ -589,7 +589,7 @@ function ModelCard({
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-blue-600">Downloading...</span>
+                <span className="text-sm font-medium text-blue-600">ダウンロード中...</span>
                 <span className="text-sm font-semibold text-blue-600">{Math.round(downloadProgress)}%</span>
               </div>
               <button
@@ -598,9 +598,9 @@ function ModelCard({
                   onCancel();
                 }}
                 className="text-xs text-gray-600 hover:text-red-600 font-medium transition-colors px-2 py-1 rounded hover:bg-red-50"
-                title="Cancel download"
+                title="ダウンロードをキャンセル"
               >
-                Cancel
+                キャンセル
               </button>
             </div>
             <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -617,7 +617,7 @@ function ModelCard({
                   {formatFileSize(model.size_mb * downloadProgress / 100)} / {formatFileSize(model.size_mb)}
                 </>
               ) : (
-                'Downloading...'
+                'ダウンロード中...'
               )}
             </p>
           </motion.div>

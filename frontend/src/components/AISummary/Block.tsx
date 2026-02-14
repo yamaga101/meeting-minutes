@@ -27,33 +27,33 @@ interface CommandOption {
 }
 
 const COMMANDS: CommandOption[] = [
-  { 
-    id: 'text', 
-    label: 'Text', 
-    type: 'text', 
-    icon: 'T', 
-    description: 'Just start writing with plain text' 
+  {
+    id: 'text',
+    label: 'テキスト',
+    type: 'text',
+    icon: 'T',
+    description: 'プレーンテキストで入力'
   },
-  { 
-    id: 'bullet', 
-    label: 'Bullet List', 
-    type: 'bullet', 
-    icon: '•', 
-    description: 'Create a bulleted list' 
+  {
+    id: 'bullet',
+    label: '箇条書き',
+    type: 'bullet',
+    icon: '•',
+    description: '箇条書きリストを作成'
   },
-  { 
-    id: 'h1', 
-    label: 'Heading 1', 
-    type: 'heading1', 
-    icon: 'H1', 
-    description: 'Big section heading' 
+  {
+    id: 'h1',
+    label: '見出し 1',
+    type: 'heading1',
+    icon: 'H1',
+    description: '大きなセクション見出し'
   },
-  { 
-    id: 'h2', 
-    label: 'Heading 2', 
-    type: 'heading2', 
-    icon: 'H2', 
-    description: 'Medium section heading' 
+  {
+    id: 'h2',
+    label: '見出し 2',
+    type: 'heading2',
+    icon: 'H2',
+    description: '中サイズのセクション見出し'
   },
 ];
 
@@ -250,7 +250,7 @@ export const BlockComponent: React.FC<BlockProps> = ({
             ${block.type === 'heading1' ? 'text-xl font-bold' : ''}
             ${block.type === 'heading2' ? 'text-lg font-semibold' : ''}
           `}
-          placeholder="Type '/' for commands..."
+          placeholder="'/' でコマンドを入力..."
         />
 
         {showCommands && (

@@ -56,7 +56,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
       }
     } catch (error) {
       console.error('Failed to fetch built-in AI models:', error);
-      toast.error('Failed to load models');
+      toast.error('モデルの読み込みに失敗しました');
     } finally {
       setIsLoading(false);
       setHasFetched(true);
@@ -121,7 +121,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
           });
           // Refresh models list
           fetchModels();
-          toast.success(`Model ${model} downloaded successfully`);
+          toast.success(`モデル ${model} のダウンロードが完了しました`);
         }
 
         // Handle cancelled status
@@ -210,7 +210,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
       }
 
       // For real errors, show toast and remove from downloading
-      toast.error(`Failed to download ${modelName}`);
+      toast.error(`${modelName} のダウンロードに失敗しました`);
 
       setDownloadingModels((prev) => {
         const newSet = new Set(prev);
@@ -226,7 +226,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
   const cancelDownload = async (modelName: string) => {
     try {
       await invoke('builtin_ai_cancel_download', { modelName });
-      toast.info(`Download of ${modelName} cancelled`);
+      toast.info(`${modelName} のダウンロードをキャンセルしました`);
       setDownloadingModels((prev) => {
         const newSet = new Set(prev);
         newSet.delete(modelName);
@@ -240,11 +240,11 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
   const deleteModel = async (modelName: string) => {
     try {
       await invoke('builtin_ai_delete_model', { modelName });
-      toast.success(`Model ${modelName} deleted`);
+      toast.success(`モデル ${modelName} を削除しました`);
       fetchModels();
     } catch (error) {
       console.error('Failed to delete model:', error);
-      toast.error(`Failed to delete ${modelName}`);
+      toast.error(`${modelName} の削除に失敗しました`);
     }
   };
 
@@ -253,7 +253,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
     return (
       <div className="text-center py-8 text-muted-foreground">
         <RefreshCw className="mx-auto h-8 w-8 animate-spin mb-2" />
-        Loading models...
+        モデルを読み込み中...
       </div>
     );
   }
@@ -263,7 +263,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
     return (
       <Alert>
         <AlertDescription>
-          No models found. Download a model to get started with Built-in AI.
+          モデルが見つかりません。ビルトインAIを使用するにはモデルをダウンロードしてください。
         </AlertDescription>
       </Alert>
     );
@@ -272,7 +272,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h4 className="text-sm font-bold">Built-in AI Models</h4>
+        <h4 className="text-sm font-bold">ビルトインAIモデル</h4>
       </div>
 
       <div className="grid gap-4">
@@ -312,11 +312,11 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                       <>
                         <span className="text-xs text-green-600 font-medium flex items-center gap-1">
                           <span className="w-2 h-2 rounded-full bg-green-600"></span>
-                          Ready
+                          準備完了
                         </span>
                         {selectedModel === model.name && (
                           <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded">
-                            Selected
+                            選択中
                           </span>
                         )}
                       </>
@@ -324,17 +324,17 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                     {isCorrupted && (
                       <span className="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded flex items-center gap-1">
                         <BadgeAlert className="w-3 h-3" />
-                        Corrupted
+                        破損
                       </span>
                     )}
                     {isError && (
                       <span className="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded">
-                        Error
+                        エラー
                       </span>
                     )}
                     {isNotDownloaded && !modelIsDownloading && (
                       <span className="text-xs text-gray-600 font-medium">
-                        Not Downloaded
+                        未ダウンロード
                       </span>
                     )}
                   </div>
@@ -347,8 +347,8 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                         {isError && typeof model.status === 'object' && 'Error' in model.status
                           ? (model.status as any).Error
                           : isCorrupted
-                          ? 'File is corrupted. Retry download or delete.'
-                          : 'An error occurred'}
+                          ? 'ファイルが破損しています。再ダウンロードまたは削除してください。'
+                          : 'エラーが発生しました'}
                       </p>
                     )}
                     <div className="text-xs text-gray-500">
@@ -370,7 +370,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                       }}
                     >
                       <Download className="mr-2 h-4 w-4" />
-                      Download
+                      ダウンロード
                     </Button>
                   )}
 
@@ -385,7 +385,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                         cancelDownload(model.name);
                       }}
                     >
-                      Cancel
+                      キャンセル
                     </Button>
                   )}
 
@@ -401,7 +401,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                       }}
                     >
                       <RefreshCw className="mr-2 h-4 w-4" />
-                      Retry
+                      再試行
                     </Button>
                   )}
 
@@ -417,7 +417,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                         }}
                       >
                         <RefreshCw className="mr-2 h-4 w-4" />
-                        Retry
+                        再試行
                       </Button>
                       <Button
                         variant="outline"
@@ -428,7 +428,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                         }}
                       >
                         <Trash2 className="mr-2 h-4 w-4" />
-                        Delete
+                        削除
                       </Button>
                     </>
                   )}
@@ -441,7 +441,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
                         e.stopPropagation();
                         deleteModel(model.name);
                       }}
-                      title="Delete model"
+                      title="モデルを削除"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -453,7 +453,7 @@ export function BuiltInModelManager({ selectedModel, onModelSelect }: BuiltInMod
               {modelIsDownloading && progress !== undefined && (
                 <div className="mt-3 pt-3 border-t border-gray-200">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm font-medium text-gray-900">Downloading...</span>
+                    <span className="text-sm font-medium text-gray-900">ダウンロード中...</span>
                     <span className="text-sm font-semibold text-gray-900">
                       {Math.round(progress)}%
                     </span>

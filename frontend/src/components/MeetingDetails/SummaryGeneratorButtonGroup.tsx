@@ -86,8 +86,8 @@ export function SummaryGeneratorButtonGroup({
 
       // Check if specific model is configured
       if (!selectedModel) {
-        toast.error('No built-in AI model selected', {
-          description: 'Please select a model in settings',
+        toast.error('ビルトインAIモデルが選択されていません', {
+          description: '設定でモデルを選択してください',
           duration: 5000,
         });
         setSettingsDialogOpen(true);
@@ -112,8 +112,8 @@ export function SummaryGeneratorButtonGroup({
       });
 
       if (!modelInfo) {
-        toast.error('Model not found', {
-          description: `Could not find information for model: ${selectedModel}`,
+        toast.error('モデルが見つかりません', {
+          description: `モデル情報が見つかりません: ${selectedModel}`,
           duration: 5000,
         });
         setSettingsDialogOpen(true);
@@ -124,16 +124,16 @@ export function SummaryGeneratorButtonGroup({
       const status = modelInfo.status;
 
       if (status.type === 'downloading') {
-        toast.info('Model download in progress', {
-          description: `${selectedModel} is downloading (${status.progress}%). Please wait until download completes.`,
+        toast.info('モデルのダウンロード中', {
+          description: `${selectedModel} をダウンロード中 (${status.progress}%)。完了までお待ちください。`,
           duration: 5000,
         });
         return;
       }
 
       if (status.type === 'not_downloaded') {
-        toast.error('Model not downloaded', {
-          description: `${selectedModel} needs to be downloaded before use. Opening model settings...`,
+        toast.error('モデルが未ダウンロードです', {
+          description: `${selectedModel} を使用するにはダウンロードが必要です。モデル設定を開きます...`,
           duration: 5000,
         });
         setSettingsDialogOpen(true);
@@ -141,8 +141,8 @@ export function SummaryGeneratorButtonGroup({
       }
 
       if (status.type === 'corrupted') {
-        toast.error('Model file corrupted', {
-          description: `${selectedModel} file is corrupted. Please delete and re-download.`,
+        toast.error('モデルファイルが破損しています', {
+          description: `${selectedModel} のファイルが破損しています。削除して再ダウンロードしてください。`,
           duration: 7000,
         });
         setSettingsDialogOpen(true);
@@ -150,8 +150,8 @@ export function SummaryGeneratorButtonGroup({
       }
 
       if (status.type === 'error') {
-        toast.error('Model error', {
-          description: status.Error || 'An error occurred with the model',
+        toast.error('モデルエラー', {
+          description: status.Error || 'モデルでエラーが発生しました',
           duration: 5000,
         });
         setSettingsDialogOpen(true);
@@ -159,15 +159,15 @@ export function SummaryGeneratorButtonGroup({
       }
 
       // Fallback
-      toast.error('Model not available', {
-        description: 'The selected model is not ready for use',
+      toast.error('モデルが利用できません', {
+        description: '選択したモデルは使用準備ができていません',
         duration: 5000,
       });
       setSettingsDialogOpen(true);
 
     } catch (error) {
       console.error('Error checking built-in AI models:', error);
-      toast.error('Failed to check model status', {
+      toast.error('モデルの状態確認に失敗しました', {
         description: error instanceof Error ? error.message : String(error),
         duration: 5000,
       });
@@ -197,7 +197,7 @@ export function SummaryGeneratorButtonGroup({
       if (!models || models.length === 0) {
         // No models available, show message and open settings
         toast.error(
-          'No Ollama models found. Please download gemma2:2b from Model Settings.',
+          'Ollamaモデルが見つかりません。モデル設定からgemma2:2bをダウンロードしてください。',
           { duration: 5000 }
         );
         setSettingsDialogOpen(true);
@@ -213,12 +213,12 @@ export function SummaryGeneratorButtonGroup({
       if (isOllamaNotInstalledError(errorMessage)) {
         // Ollama is not installed - show specific message with download link
         toast.error(
-          'Ollama is not installed',
+          'Ollamaがインストールされていません',
           {
-            description: 'Please download and install Ollama to use local models.',
+            description: 'ローカルモデルを使用するにはOllamaをダウンロードしてインストールしてください。',
             duration: 7000,
             action: {
-              label: 'Download',
+              label: 'ダウンロード',
               onClick: () => invoke('open_external_url', { url: 'https://ollama.com/download' })
             }
           }
@@ -226,7 +226,7 @@ export function SummaryGeneratorButtonGroup({
       } else {
         // Other error - generic message
         toast.error(
-          'Failed to check Ollama models. Please check if Ollama is running and download a model.',
+          'Ollamaモデルの確認に失敗しました。Ollamaが起動しているか確認し、モデルをダウンロードしてください。',
           { duration: 5000 }
         );
       }
@@ -250,10 +250,10 @@ export function SummaryGeneratorButtonGroup({
             Analytics.trackButtonClick('stop_summary_generation', 'meeting_details');
             onStopGeneration();
           }}
-          title="Stop summary generation"
+          title="要約の生成を停止"
         >
           <Square className="xl:mr-2" size={18} fill="currentColor" />
-          <span className="hidden lg:inline xl:inline">Stop</span>
+          <span className="hidden lg:inline xl:inline">停止</span>
         </Button>
       ) : (
         <Button
@@ -267,21 +267,21 @@ export function SummaryGeneratorButtonGroup({
           disabled={isCheckingModels || isModelConfigLoading}
           title={
             isModelConfigLoading
-              ? 'Loading model configuration...'
+              ? 'モデル設定を読み込み中...'
               : isCheckingModels
-                ? 'Checking models...'
-                : 'Generate AI Summary'
+                ? 'モデルを確認中...'
+                : 'AI要約を生成'
           }
         >
           {isCheckingModels || isModelConfigLoading ? (
             <>
               <Loader2 className="animate-spin xl:mr-2" size={18} />
-              <span className="hidden xl:inline">Processing...</span>
+              <span className="hidden xl:inline">処理中...</span>
             </>
           ) : (
             <>
               <Sparkles className="xl:mr-2" size={18} />
-              <span className="hidden lg:inline xl:inline">Generate Summary</span>
+              <span className="hidden lg:inline xl:inline">要約を生成</span>
             </>
           )}
         </Button>
@@ -293,17 +293,17 @@ export function SummaryGeneratorButtonGroup({
           <Button
             variant="outline"
             size="sm"
-            title="Summary Settings"
+            title="要約設定"
           >
             <Settings />
-            <span className="hidden lg:inline">AI Model</span>
+            <span className="hidden lg:inline">AIモデル</span>
           </Button>
         </DialogTrigger>
         <DialogContent
           aria-describedby={undefined}
         >
           <VisuallyHidden>
-            <DialogTitle>Model Settings</DialogTitle>
+            <DialogTitle>モデル設定</DialogTitle>
           </VisuallyHidden>
           <ModelSettingsModal
             onSave={async (config) => {
@@ -324,10 +324,10 @@ export function SummaryGeneratorButtonGroup({
             <Button
               variant="outline"
               size="sm"
-              title="Select summary template"
+              title="要約テンプレートを選択"
             >
               <FileText />
-              <span className="hidden lg:inline">Template</span>
+              <span className="hidden lg:inline">テンプレート</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
