@@ -126,6 +126,20 @@ export const MODEL_CONFIGS: Record<string, Partial<ModelInfo>> = {
     size_mb: 1031,
     accuracy: 'High',
     speed: 'Slow'
+  },
+
+  // kotoba-whisper v2.0 (Japanese-optimized distil-whisper)
+  'kotoba-v2.0-q5_0': {
+    description: '日本語特化モデル。日本語文字起こしに最適化された蒸留版。',
+    size_mb: 512,
+    accuracy: 'High',
+    speed: 'Fast'
+  },
+  'kotoba-v2.0': {
+    description: '日本語特化モデル（フルプレシジョン）。最高の日本語精度。',
+    size_mb: 1449,
+    accuracy: 'High',
+    speed: 'Medium'
   }
 };
 
@@ -225,6 +239,8 @@ export function getModelTagline(modelName: string, speed: ProcessingSpeed, accur
     featureText = 'Balanced quality';
   } else if (baseName === 'tiny') {
     featureText = 'Fastest option';
+  } else if (baseName.startsWith('kotoba')) {
+    featureText = 'Japanese optimized';
   }
 
   // Add quantization note if applicable

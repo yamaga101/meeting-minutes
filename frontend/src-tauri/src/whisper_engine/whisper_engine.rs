@@ -189,6 +189,10 @@ impl WhisperEngine {
             ("large-v3-turbo-q5_0", "ggml-large-v3-turbo-q5_0.bin", 547, "High", "Medium", "Quantized large model, best balance"),
             ("large-v3-q5_0", "ggml-large-v3-q5_0.bin", 1031, "High", "Slow", "Quantized large model, high accuracy"),
 
+            // kotoba-whisper v2.0 (Japanese-optimized distil-whisper)
+            ("kotoba-v2.0-q5_0", "ggml-kotoba-v2.0-q5_0.bin", 512, "High", "Fast", "Japanese-optimized, best for Japanese transcription"),
+            ("kotoba-v2.0", "ggml-kotoba-v2.0.bin", 1449, "High", "Medium", "Japanese-optimized, highest Japanese accuracy"),
+
            ];
         
         for (name, filename, size_mb, accuracy, speed, description) in model_configs {
@@ -957,7 +961,11 @@ impl WhisperEngine {
             "large-v3-turbo-q5_0" => "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin",
             "large-v3-q5_0" => "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-q5_0.bin",
             // Quantized int8 models
-            
+
+            // kotoba-whisper v2.0 (Japanese-optimized)
+            "kotoba-v2.0-q5_0" => "https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0-ggml/resolve/main/ggml-kotoba-whisper-v2.0-q5_0.bin",
+            "kotoba-v2.0" => "https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0-ggml/resolve/main/ggml-kotoba-whisper-v2.0.bin",
+
             _ => return Err(anyhow!("Unsupported model: {}", model_name))
         };
         
