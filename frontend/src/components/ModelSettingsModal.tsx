@@ -965,7 +965,7 @@ export function ModelSettingsModal({
                 id="custom-model"
                 value={customOpenAIModel}
                 onChange={(e) => setCustomOpenAIModel(e.target.value)}
-                placeholder="gpt-4, llama-3-70b, etc."
+                placeholder="例: gpt-4, llama-3-70b など"
                 className="mt-1"
               />
               <p className="text-xs text-muted-foreground mt-1">
@@ -1008,7 +1008,7 @@ export function ModelSettingsModal({
                       type="number"
                       value={customMaxTokens}
                       onChange={(e) => setCustomMaxTokens(e.target.value)}
-                      placeholder="e.g., 4096"
+                      placeholder="例: 4096"
                       className="mt-1"
                     />
                   </div>
@@ -1022,7 +1022,7 @@ export function ModelSettingsModal({
                       max="2"
                       value={customTemperature}
                       onChange={(e) => setCustomTemperature(e.target.value)}
-                      placeholder="e.g., 0.7"
+                      placeholder="例: 0.7"
                       className="mt-1"
                     />
                   </div>
@@ -1036,7 +1036,7 @@ export function ModelSettingsModal({
                       max="1"
                       value={customTopP}
                       onChange={(e) => setCustomTopP(e.target.value)}
-                      placeholder="e.g., 0.9"
+                      placeholder="例: 0.9"
                       className="mt-1"
                     />
                   </div>

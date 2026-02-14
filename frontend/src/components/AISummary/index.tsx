@@ -709,7 +709,7 @@ export const AISummary = ({ summary, status, error, onSummaryChange, onRegenerat
             onClick={handleUndo}
             disabled={currentHistoryIndex === 0}
             className="p-2 hover:bg-gray-100 rounded disabled:opacity-50"
-            title="Undo"
+            title="元に戻す"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -730,7 +730,7 @@ export const AISummary = ({ summary, status, error, onSummaryChange, onRegenerat
             onClick={handleRedo}
             disabled={currentHistoryIndex === history.length - 1}
             className="p-2 hover:bg-gray-100 rounded disabled:opacity-50"
-            title="Redo"
+            title="やり直す"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -750,7 +750,7 @@ export const AISummary = ({ summary, status, error, onSummaryChange, onRegenerat
           <button
             onClick={handleAddSection}
             className="p-2 hover:bg-gray-100 rounded"
-            title="Add new section"
+            title="新しいセクションを追加"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -775,12 +775,12 @@ export const AISummary = ({ summary, status, error, onSummaryChange, onRegenerat
             className="px-2 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md flex items-center space-x-1"
           >
             <span>📋</span>
-            <span>Copy</span>
+            <span>コピー</span>
           </button>
           <button
             onClick={onRegenerateSummary}
             className="px-2 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md flex items-center space-x-1"
-            title="Regenerate Summary"
+            title="要約を再生成"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

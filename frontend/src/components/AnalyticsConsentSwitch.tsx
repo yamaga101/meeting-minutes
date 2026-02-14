@@ -199,7 +199,7 @@ export default function AnalyticsConsentSwitch() {
                     variant="outline"
                     size="sm"
                     className="flex-shrink-0"
-                    title="Copy User ID"
+                    title="ユーザーIDをコピー"
                   >
                     {isCopied ? (
                       <>

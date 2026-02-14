@@ -43,15 +43,15 @@ export function useSummaryGeneration({
   const getSummaryStatusMessage = useCallback((status: SummaryStatus) => {
     switch (status) {
       case 'processing':
-        return 'Processing transcript...';
+        return '文字起こしを処理中...';
       case 'summarizing':
-        return 'Generating summary...';
+        return '要約を生成中...';
       case 'regenerating':
-        return 'Regenerating summary...';
+        return '要約を再生成中...';
       case 'completed':
-        return 'Summary completed';
+        return '要約が完了しました';
       case 'error':
-        return 'Error generating summary';
+        return '要約の生成中にエラーが発生しました';
       default:
         return '';
     }
@@ -72,7 +72,7 @@ export function useSummaryGeneration({
 
     try {
       if (!transcriptText.trim()) {
-        throw new Error('No transcript text available. Please add some text first.');
+        throw new Error('文字起こしテキストがありません。先にテキストを追加してください。');
       }
 
       if (!isRegeneration) {
@@ -98,8 +98,8 @@ export function useSummaryGeneration({
       }
 
       // Show toast notification for generation start
-      toast.info(`${isRegeneration ? 'Regenerating' : 'Generating'} summary...`, {
-        description: `Using ${modelConfig.provider}/${modelConfig.model}`,
+      toast.info(`要約を${isRegeneration ? '再生成' : '生成'}中...`, {
+        description: `${modelConfig.provider}/${modelConfig.model} を使用`,
         duration: 3000,
       });
 
@@ -151,7 +151,7 @@ export function useSummaryGeneration({
         // Handle errors
         if (pollingResult.status === 'error' || pollingResult.status === 'failed') {
           console.error('Backend returned error:', pollingResult.error);
-          const errorMessage = pollingResult.error || `Summary ${isRegeneration ? 'regeneration' : 'generation'} failed`;
+          const errorMessage = pollingResult.error || `要約の${isRegeneration ? '再生成' : '生成'}に失敗しました`;
 
           // If this was a regeneration, try to restore previous summary from database
           if (isRegeneration) {
@@ -167,8 +167,8 @@ export function useSummaryGeneration({
                 setSummaryError(null);
 
                 // Show error toast with restoration message
-                toast.error(`Failed to regenerate summary`, {
-                  description: `${errorMessage}. Your previous summary has been restored.`,
+                toast.error('要約の再生成に失敗しました', {
+                  description: `${errorMessage}。以前の要約を復元しました。`,
                 });
 
                 await Analytics.trackSummaryGenerationCompleted(
@@ -195,9 +195,9 @@ export function useSummaryGeneration({
             errorMessage.toLowerCase().includes('model') && errorMessage.toLowerCase().includes('required');
 
           // Show error toast
-          toast.error(`Failed to ${isRegeneration ? 'regenerate' : 'generate'} summary`, {
+          toast.error(`要約の${isRegeneration ? '再生成' : '生成'}に失敗しました`, {
             description: errorMessage.includes('Connection refused')
-              ? 'Could not connect to LLM service. Please ensure Ollama or your configured LLM provider is running.'
+              ? 'LLMサービスに接続できません。Ollamaまたは設定済みのLLMプロバイダーが起動していることを確認してください。'
               : errorMessage,
           });
 
@@ -234,8 +234,8 @@ export function useSummaryGeneration({
             setSummaryStatus('completed');
 
             // Show success toast
-            toast.success('Summary generated successfully!', {
-              description: 'Your meeting summary is ready',
+            toast.success('要約の生成が完了しました！', {
+              description: '会議の要約が準備できました',
               duration: 4000,
             });
 
@@ -257,7 +257,7 @@ export function useSummaryGeneration({
 
           if (allEmpty) {
             console.error('Summary completed but all sections empty');
-            setSummaryError('Summary generation completed but returned empty content.');
+            setSummaryError('要約の生成は完了しましたが、空のコンテンツが返されました。');
             setSummaryStatus('error');
 
             await Analytics.trackSummaryGenerationCompleted(
@@ -308,8 +308,8 @@ export function useSummaryGeneration({
           setSummaryStatus('completed');
 
           // Show success toast
-          toast.success('Summary generated successfully!', {
-            description: 'Your meeting summary is ready',
+          toast.success('要約の生成が完了しました！', {
+            description: '会議の要約が準備できました',
             duration: 4000,
           });
 
@@ -331,7 +331,7 @@ export function useSummaryGeneration({
       setSummaryStatus('error');
       // Note: We don't clear the summary here because the backend has already restored from backup
 
-      toast.error(`Failed to ${isRegeneration ? 'regenerate' : 'generate'} summary`, {
+      toast.error(`要約の${isRegeneration ? '再生成' : '生成'}に失敗しました`, {
         description: errorMessage,
       });
 
@@ -384,7 +384,7 @@ export function useSummaryGeneration({
       return allData.transcripts;
     } catch (error) {
       console.error('❌ Error fetching all transcripts:', error);
-      toast.error('Failed to fetch transcripts for summary generation');
+      toast.error('要約生成用の文字起こしの取得に失敗しました');
       return [];
     }
   }, []);
@@ -394,7 +394,7 @@ export function useSummaryGeneration({
     // Check if model config is still loading
     if (isModelConfigLoading) {
       console.log('⏳ Model configuration is still loading, please wait...');
-      toast.info('Loading model configuration, please wait...');
+      toast.info('モデル設定を読み込み中です。しばらくお待ちください...');
       return;
     }
 
@@ -403,7 +403,7 @@ export function useSummaryGeneration({
     const allTranscripts = await fetchAllTranscripts(meeting.id);
 
     if (!allTranscripts.length) {
-      const error_msg = 'No transcripts available for summary';
+      const error_msg = '要約に使用できる文字起こしがありません';
       console.log(error_msg);
       toast.error(error_msg);
       return;
@@ -425,7 +425,7 @@ export function useSummaryGeneration({
 
         if (!models || models.length === 0) {
           toast.error(
-            'No Ollama models found. Please download gemma3:1b from Model Settings.',
+            'Ollamaモデルが見つかりません。モデル設定からgemma3:1bをダウンロードしてください。',
             { duration: 5000 }
           );
           return;
@@ -437,12 +437,12 @@ export function useSummaryGeneration({
         if (isOllamaNotInstalledError(errorMessage)) {
           // Ollama is not installed - show specific message with download link
           toast.error(
-            'Ollama is not installed',
+            'Ollamaがインストールされていません',
             {
-              description: 'Please download and install Ollama to use local models.',
+              description: 'ローカルモデルを使用するには、Ollamaをダウンロードしてインストールしてください。',
               duration: 7000,
               action: {
-                label: 'Download',
+                label: 'ダウンロード',
                 onClick: () => invokeTauri('open_external_url', { url: 'https://ollama.com/download' })
               }
             }
@@ -450,7 +450,7 @@ export function useSummaryGeneration({
         } else {
           // Other error - generic message
           toast.error(
-            'Failed to check Ollama models. Please ensure Ollama is running and download a model from Settings.',
+            'Ollamaモデルの確認に失敗しました。Ollamaが起動していることを確認し、設定からモデルをダウンロードしてください。',
             { duration: 5000 }
           );
         }
@@ -464,8 +464,8 @@ export function useSummaryGeneration({
         const selectedModel = modelConfig.model;
 
         if (!selectedModel) {
-          toast.error('No built-in AI model selected', {
-            description: 'Please select a model in settings',
+          toast.error('ビルトインAIモデルが選択されていません', {
+            description: '設定でモデルを選択してください',
             duration: 5000,
           });
           if (onOpenModelSettings) {
@@ -490,16 +490,16 @@ export function useSummaryGeneration({
             const status = modelInfo.status;
 
             if (status.type === 'downloading') {
-              toast.info('Model download in progress', {
-                description: `${selectedModel} is downloading (${status.progress}%). Please wait until download completes.`,
+              toast.info('モデルダウンロード中', {
+                description: `${selectedModel} をダウンロード中です（${status.progress}%）。完了までお待ちください。`,
                 duration: 5000,
               });
               return;
             }
 
             if (status.type === 'not_downloaded') {
-              toast.error('Built-in AI model not downloaded', {
-                description: `${selectedModel} needs to be downloaded. Please download it in model settings.`,
+              toast.error('ビルトインAIモデルがダウンロードされていません', {
+                description: `${selectedModel} のダウンロードが必要です。モデル設定からダウンロードしてください。`,
                 duration: 7000,
               });
               if (onOpenModelSettings) {
@@ -510,10 +510,10 @@ export function useSummaryGeneration({
 
             if (status.type === 'corrupted' || status.type === 'error') {
               const errorDesc = status.type === 'error'
-                ? status.Error || 'The model file has an error'
-                : 'The model file is corrupted';
-              toast.error('Built-in AI model not available', {
-                description: `${errorDesc}. Please check model settings.`,
+                ? status.Error || 'モデルファイルにエラーがあります'
+                : 'モデルファイルが破損しています';
+              toast.error('ビルトインAIモデルが利用できません', {
+                description: `${errorDesc}。モデル設定を確認してください。`,
                 duration: 7000,
               });
               if (onOpenModelSettings) {
@@ -524,8 +524,8 @@ export function useSummaryGeneration({
           }
 
           // Fallback if we couldn't get model info
-          toast.error('Built-in AI model not ready', {
-            description: 'Please ensure the model is downloaded in settings',
+          toast.error('ビルトインAIモデルの準備ができていません', {
+            description: '設定でモデルがダウンロードされていることを確認してください',
             duration: 5000,
           });
           if (onOpenModelSettings) {
@@ -537,7 +537,7 @@ export function useSummaryGeneration({
         // Model is ready, continue to backend call
       } catch (error) {
         console.error('Error validating built-in AI model:', error);
-        toast.error('Failed to validate built-in AI model', {
+        toast.error('ビルトインAIモデルの検証に失敗しました', {
           description: error instanceof Error ? error.message : String(error),
           duration: 5000,
         });
@@ -600,8 +600,8 @@ export function useSummaryGeneration({
     setSummaryError(null);
 
     // Show toast notification
-    toast.info('Summary generation stopped', {
-      description: 'You can generate a new summary anytime',
+    toast.info('要約の生成を停止しました', {
+      description: 'いつでも新しい要約を生成できます',
       duration: 3000,
     });
   }, [meeting.id, stopSummaryPolling]);

@@ -116,16 +116,16 @@ export function PermissionWarning({
               <>
                 <p className="mb-3">
                   {hasMicrophone
-                    ? 'System audio capture is not available. You can still record with your microphone, but computer audio won\'t be captured.'
-                    : 'System audio capture is also not available.'}
+                    ? 'システムオーディオのキャプチャが利用できません。マイクでの録音は可能ですが、コンピューターの音声はキャプチャされません。'
+                    : 'システムオーディオのキャプチャも利用できません。'}
                 </p>
                 {isMacOS && (
                   <div className="space-y-2 text-sm mb-4">
-                    <p className="font-medium">To enable system audio on macOS:</p>
+                    <p className="font-medium">macOSでシステムオーディオを有効にするには：</p>
                     <ul className="list-disc list-inside ml-2 space-y-1">
-                      <li>Install a virtual audio device (e.g., BlackHole 2ch)</li>
-                      <li>Grant Screen Recording permission to Meetily</li>
-                      <li>Configure your audio routing in Audio MIDI Setup</li>
+                      <li>仮想オーディオデバイスをインストール（例: BlackHole 2ch）</li>
+                      <li>Meetilyに画面収録の権限を付与</li>
+                      <li>Audio MIDI設定でオーディオルーティングを設定</li>
                     </ul>
                   </div>
                 )}
