@@ -35,8 +35,8 @@ if not logger.handlers:
     logger.addHandler(console_handler)
 
 app = FastAPI(
-    title="Meeting Summarizer API",
-    description="API for processing and summarizing meeting transcripts",
+    title="会議要約API",
+    description="会議の文字起こしを処理・要約するAPI",
     version="1.0.0"
 )
 
@@ -105,7 +105,7 @@ class TranscriptRequest(BaseModel):
     meeting_id: str
     chunk_size: Optional[int] = 5000
     overlap: Optional[int] = 1000
-    custom_prompt: Optional[str] = "Generate a summary of the meeting transcript."
+    custom_prompt: Optional[str] = "会議の文字起こしの要約を日本語で生成してください。"
 
 class SummaryProcessor:
     """Handles the processing of summaries in a thread-safe way"""
@@ -120,7 +120,7 @@ class SummaryProcessor:
             logger.error(f"Failed to initialize SummaryProcessor: {str(e)}", exc_info=True)
             raise
 
-    async def process_transcript(self, text: str, model: str, model_name: str, chunk_size: int = 5000, overlap: int = 1000, custom_prompt: str = "Generate a summary of the meeting transcript.") -> tuple:
+    async def process_transcript(self, text: str, model: str, model_name: str, chunk_size: int = 5000, overlap: int = 1000, custom_prompt: str = "会議の文字起こしの要約を日本語で生成してください。") -> tuple:
         """Process a transcript text"""
         try:
             if not text:
@@ -244,12 +244,12 @@ async def process_transcript_background(process_id: str, transcript: TranscriptR
         # Create final summary structure by aggregating chunk results
         final_summary = {
             "MeetingName": "",
-            "People": {"title": "People", "blocks": []},
-            "SessionSummary": {"title": "Session Summary", "blocks": []},
-            "CriticalDeadlines": {"title": "Critical Deadlines", "blocks": []},
-            "KeyItemsDecisions": {"title": "Key Items & Decisions", "blocks": []},
-            "ImmediateActionItems": {"title": "Immediate Action Items", "blocks": []},
-            "NextSteps": {"title": "Next Steps", "blocks": []},
+            "People": {"title": "参加者", "blocks": []},
+            "SessionSummary": {"title": "セッション概要", "blocks": []},
+            "CriticalDeadlines": {"title": "重要な期限", "blocks": []},
+            "KeyItemsDecisions": {"title": "重要事項・決定事項", "blocks": []},
+            "ImmediateActionItems": {"title": "即時アクションアイテム", "blocks": []},
+            "NextSteps": {"title": "次のステップ", "blocks": []},
             # "OtherImportantPoints": {"title": "Other Important Points", "blocks": []},
             # "ClosingRemarks": {"title": "Closing Remarks", "blocks": []},
             "MeetingNotes": {

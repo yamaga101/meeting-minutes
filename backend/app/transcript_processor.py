@@ -171,28 +171,30 @@ class TranscriptProcessor:
                     # Run the agent to get the structured summary for the chunk
                     if model != "ollama":
                         summary_result = await agent.run(
-                            f"""Given the following meeting transcript chunk, extract the relevant information according to the required JSON structure. If a specific section (like Critical Deadlines) has no relevant information in this chunk, return an empty list for its 'blocks'. Ensure the output is only the JSON data.
+                            f"""以下の会議の文字起こしチャンクから、必要な情報をJSON構造に従って抽出してください。特定のセクション（例：重要な期限）に該当する情報がない場合は、そのセクションの'blocks'を空リストにしてください。出力はJSONデータのみにしてください。
 
-                            IMPORTANT: Block types must be one of: 'text', 'bullet', 'heading1', 'heading2'
-                            - Use 'text' for regular paragraphs
-                            - Use 'bullet' for list items
-                            - Use 'heading1' for major headings
-                            - Use 'heading2' for subheadings
-                            
-                            For the color field, use 'gray' for less important content or '' (empty string) for default.
+                            重要: Blockタイプは 'text', 'bullet', 'heading1', 'heading2' のいずれかにしてください
+                            - 'text': 通常の段落
+                            - 'bullet': リスト項目
+                            - 'heading1': 大見出し
+                            - 'heading2': 小見出し
 
-                            Transcript Chunk:
+                            colorフィールドは、重要度が低い内容には 'gray'、それ以外は '' (空文字) を使用してください。
+
+                            すべての出力テキスト（セクションタイトル、内容、会議名など）は日本語で記述してください。
+
+                            文字起こしチャンク:
                             ---
                         {chunk}
                         ---
 
-                        Please capture all relevant action items. Transcription can have spelling mistakes. correct it if required. context is important.
-                        
-                        While generating the summary, please add the following context:
+                        すべてのアクションアイテムを漏れなく記録してください。文字起こしにはスペルミスがある場合があるので、必要に応じて修正してください。文脈を重視してください。
+
+                        要約生成時に以下のコンテキストも考慮してください:
                         ---
                         {custom_prompt}
                         ---
-                        Make sure the output is only the JSON data.
+                        出力はJSONデータのみにしてください。
                         """,
                     )
                     else:
@@ -236,21 +238,23 @@ class TranscriptProcessor:
         message = {
         'role': 'system',
         'content': f'''
-        Given the following meeting transcript chunk, extract the relevant information according to the required JSON structure. If a specific section (like Critical Deadlines) has no relevant information in this chunk, return an empty list for its 'blocks'. Ensure the output is only the JSON data.
+        以下の会議の文字起こしチャンクから、必要な情報をJSON構造に従って抽出してください。特定のセクション（例：重要な期限）に該当する情報がない場合は、そのセクションの'blocks'を空リストにしてください。出力はJSONデータのみにしてください。
 
-        Transcript Chunk:
+        すべての出力テキスト（セクションタイトル、内容、会議名など）は日本語で記述してください。
+
+        文字起こしチャンク:
             ---
             {transcript}
             ---
-        Please capture all relevant action items. Transcription can have spelling mistakes. correct it if required. context is important.
-        
-        While generating the summary, please add the following context:
+        すべてのアクションアイテムを漏れなく記録してください。文字起こしにはスペルミスがある場合があるので、必要に応じて修正してください。文脈を重視してください。
+
+        要約生成時に以下のコンテキストも考慮してください:
         ---
         {custom_prompt}
         ---
 
-        Make sure the output is only the JSON data.
-    
+        出力はJSONデータのみにしてください。
+
         ''',
         }
 

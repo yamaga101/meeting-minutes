@@ -115,23 +115,23 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
       // Check for device-related errors
       if (errorMsg.includes('microphone') || errorMsg.includes('mic') || errorMsg.includes('input')) {
         setDeviceError({
-          title: 'Microphone Not Available',
-          message: 'Unable to access your microphone. Please check that:\n• Your microphone is connected\n• The app has microphone permissions\n• No other app is using the microphone'
+          title: 'マイクが利用できません',
+          message: 'マイクにアクセスできません。以下を確認してください：\n• マイクが接続されているか\n• アプリにマイクの権限があるか\n• 他のアプリがマイクを使用していないか'
         });
       } else if (errorMsg.includes('system audio') || errorMsg.includes('speaker') || errorMsg.includes('output')) {
         setDeviceError({
-          title: 'System Audio Not Available',
-          message: 'Unable to capture system audio. Please check that:\n• A virtual audio device (like BlackHole) is installed\n• The app has screen recording permissions (macOS)\n• System audio is properly configured'
+          title: 'システム音声が利用できません',
+          message: 'システム音声をキャプチャできません。以下を確認してください：\n• 仮想オーディオデバイス（BlackHoleなど）がインストールされているか\n• アプリに画面収録の権限があるか（macOS）\n• システム音声が正しく設定されているか'
         });
       } else if (errorMsg.includes('permission')) {
         setDeviceError({
-          title: 'Permission Required',
-          message: 'Recording permissions are required. Please:\n• Grant microphone access in System Settings\n• Grant screen recording access for system audio (macOS)\n• Restart the app after granting permissions'
+          title: '権限が必要です',
+          message: '録音の権限が必要です：\n• システム設定でマイクへのアクセスを許可してください\n• システム音声のために画面収録のアクセスを許可してください（macOS）\n• 権限を付与した後、アプリを再起動してください'
         });
       } else {
         setDeviceError({
-          title: 'Recording Failed',
-          message: 'Unable to start recording. Please check your audio device settings and try again.'
+          title: '録音に失敗しました',
+          message: '録音を開始できません。オーディオデバイスの設定を確認して、もう一度お試しください。'
         });
       }
     }
@@ -346,7 +346,7 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
           {isProcessing && !isParentProcessing ? (
             <div className="flex items-center space-x-2">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
-              <span className="text-sm text-gray-600">Processing recording...</span>
+              <span className="text-sm text-gray-600">録音を処理中...</span>
             </div>
           ) : (
             <>
@@ -408,7 +408,7 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
                         </button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Start recording</p>
+                        <p>録音開始</p>
                       </TooltipContent>
                     </Tooltip>
                   ) : (
@@ -435,13 +435,13 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
                             {isPaused ? <Play size={16} /> : <Pause size={16} />}
                             {(isPausing || isResuming) && (
                               <div className="absolute -top-8 text-gray-600 font-medium text-xs">
-                                {isPausing ? 'Pausing...' : 'Resuming...'}
+                                {isPausing ? '一時停止中...' : '再開中...'}
                               </div>
                             )}
                           </button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>{isPaused ? 'Resume recording' : 'Pause recording'}</p>
+                          <p>{isPaused ? '録音を再開' : '録音を一時停止'}</p>
                         </TooltipContent>
                       </Tooltip>
 
@@ -459,13 +459,13 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
                             <Square size={16} />
                             {isStopping && (
                               <div className="absolute -top-8 text-gray-600 font-medium text-xs">
-                                Stopping...
+                                停止中...
                               </div>
                             )}
                           </button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>Stop recording</p>
+                          <p>録音停止</p>
                         </TooltipContent>
                       </Tooltip>
                     </>
@@ -493,7 +493,7 @@ export const RecordingControls: React.FC<RecordingControlsProps> = ({
         {/* Show validation status only */}
         {isValidatingModel && (
           <div className="text-xs text-gray-600 text-center mt-2">
-            Validating speech recognition...
+            音声認識を検証中...
           </div>
         )}
 

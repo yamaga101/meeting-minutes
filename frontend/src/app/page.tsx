@@ -124,12 +124,12 @@ export default function Home() {
       const result = await recoverMeeting(meetingId);
 
       if (result.success) {
-        toast.success('Meeting recovered successfully!', {
+        toast.success('会議を復元しました', {
           description: result.audioRecoveryStatus?.status === 'success'
-            ? 'Transcripts and audio recovered'
-            : 'Transcripts recovered (no audio available)',
+            ? '文字起こしと音声を復元しました'
+            : '文字起こしを復元しました（音声なし）',
           action: result.meetingId ? {
-            label: 'View Meeting',
+            label: '会議を表示',
             onClick: () => {
               router.push(`/meeting-details?id=${result.meetingId}`);
             }
@@ -153,8 +153,8 @@ export default function Home() {
         }
       }
     } catch (error) {
-      toast.error('Failed to recover meeting', {
-        description: error instanceof Error ? error.message : 'Unknown error occurred',
+      toast.error('会議の復元に失敗しました', {
+        description: error instanceof Error ? error.message : '不明なエラーが発生しました',
       });
       throw error;
     }
