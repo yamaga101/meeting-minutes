@@ -10,6 +10,7 @@ from db import DatabaseManager
 import json
 from threading import Lock
 from transcript_processor import TranscriptProcessor
+from sheets_exporter import SheetsExporter
 import time
 
 # Load environment variables
@@ -168,6 +169,9 @@ class SummaryProcessor:
 # Initialize processor
 processor = SummaryProcessor()
 
+# Initialize Sheets exporter
+sheets_exporter = SheetsExporter()
+
 # New meeting management endpoints
 @app.get("/get-meetings", response_model=List[MeetingResponse])
 async def get_meetings():
@@ -304,6 +308,13 @@ async def process_transcript_background(process_id: str, transcript: TranscriptR
         if all_json_data:
             await processor.db.update_process(process_id, status="completed", result=json.dumps(final_summary))
             logger.info(f"Background processing completed for process_id: {process_id}")
+
+            # Auto-export action items to Google Sheets (non-fatal)
+            try:
+                count = sheets_exporter.export(final_summary)
+                logger.info(f"Auto-exported {count} action items to Sheets for {process_id}")
+            except Exception as export_err:
+                logger.warning(f"Sheets auto-export failed for {process_id}: {export_err}")
         else:
             error_msg = "Summary generation failed: No chunks were processed successfully. Check logs for specific errors."
             await processor.db.update_process(process_id, status="failed", error=error_msg)
@@ -629,6 +640,32 @@ async def search_transcripts(request: SearchRequest):
     except Exception as e:
         logger.error(f"Error searching transcripts: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/export-to-sheets/{meeting_id}")
+async def export_to_sheets(meeting_id: str):
+    """Manually export a meeting's action items to Google Sheets ToDo Tracker."""
+    try:
+        result = await processor.db.get_transcript_data(meeting_id)
+        if not result or not result.get("result"):
+            raise HTTPException(status_code=404, detail="No completed summary found for this meeting")
+
+        summary = json.loads(result["result"])
+
+        # Get meeting name
+        meeting = await db.get_meeting(meeting_id)
+        meeting_name = meeting["title"] if meeting else ""
+
+        count = sheets_exporter.export(summary, meeting_name)
+        return {"message": f"Exported {count} action items to Sheets", "count": count}
+    except HTTPException:
+        raise
+    except FileNotFoundError as e:
+        logger.error(f"Sheets export credentials missing: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error exporting to sheets for {meeting_id}: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
